@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamilyHub - Finanças</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="desktop-body">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">🏠</div>
+            <h2>FamilyHub</h2>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">🏠 Início</a>
+            <a href="#" class="nav-item">📅 Agenda</a>
+            <a href="compras.html" class="nav-item">🛍️ Compras</a>
+            <a href="financas.html" class="nav-item active">💰 Finanças</a>
+            <a href="#" class="nav-item">💬 Chat</a>
+            <div class="spacer"></div>
+            <a href="perfil.html" class="nav-item">👤 Meu Perfil</a>
+            <a href="index.html" class="nav-item logout">🚪 Sair</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="main-header">
+            <h1>Finanças da Família</h1>
+        </header>
+
+        <div class="finance-grid">
+
+            <div class="card">
+                <h3>Saldo Atual</h3>
+                <h1 id="saldo">R$ 0,00</h1>
+                <small id="status-legenda">Use "-" para gastos</small>
+            </div>
+
+            <div class="card">
+                <h3>Adicionar Movimentação</h3>
+                <input type="text" id="descricao" placeholder="Ex: Salário, Aluguel, Coxinha...">
+                <input type="number" id="valor" placeholder="Valor (R$) - Ex: 50 ou -50">
+                <button onclick="adicionarMovimentacao()">Adicionar</button>
+            </div>
+
+            <div class="card">
+                <h3>Histórico do Mês</h3>
+                <ul id="lista"></ul>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let movimentacoes = JSON.parse(localStorage.getItem("gastos")) || [];
+
+        function salvar() {
+            localStorage.setItem("gastos", JSON.stringify(movimentacoes));
+        }
+
+        function getMesAtual() {
+            return new Date().getMonth();
+        }
+
+        function atualizar() {
+            const lista = document.getElementById("lista");
+            const elementoSaldo = document.getElementById("saldo");
+            lista.innerHTML = "";
+
+            let saldoTotal = 0;
+            const mesAtual = getMesAtual();
+
+            movimentacoes.forEach((m, index) => {
+                if (m.mes === mesAtual) {
+                    saldoTotal += m.valor; // Se m.valor for negativo, ele subtrai automaticamente. Se for positivo, soma.
+
+                    const li = document.createElement("li");
+                    li.style.display = "flex";
+                    li.style.justifyContent = "space-between";
+                    li.style.marginBottom = "10px";
+                    li.style.borderBottom = "1px solid #eee";
+                    li.style.paddingBottom = "5px";
+
+                    // Define a cor do texto do item no histórico (Verde para ganho, Vermelho para gasto)
+                    const corValor = m.valor > 0 ? "#2ecc71" : "#e74c3c";
+                    const sinal = m.valor > 0 ? "+" : "";
+
+                    li.innerHTML = `
+                        <span>${m.descricao}</span>
+                        <span style="color: ${corValor}; font-weight: bold;">
+                            ${sinal} R$ ${m.valor.toFixed(2)}
+                            <button onclick="remover(${index})" style="background:none; border:none; cursor:pointer; margin-left:10px;">🗑️</button>
+                        </span>
+                    `;
+
+                    lista.appendChild(li);
+                }
+            });
+
+            elementoSaldo.innerText = "R$ " + saldoTotal.toFixed(2);
+
+            // Cor do Saldo Geral
+            if (saldoTotal < 0) {
+                elementoSaldo.style.color = "#e74c3c"; // Saldo negativo (vermelho)
+            } else if (saldoTotal > 0) {
+                elementoSaldo.style.color = "#2ecc71"; // Saldo positivo (verde)
+            } else {
+                elementoSaldo.style.color = "#333"; // Zero (neutro)
+            }
+        }
+
+        function adicionarMovimentacao() {
+            const desc = document.getElementById("descricao").value;
+            const valor = parseFloat(document.getElementById("valor").value);
+
+            if (!desc || isNaN(valor)) {
+                alert("Por favor, preencha a descrição e o valor.");
+                return;
+            }
+
+            movimentacoes.push({
+                descricao: desc,
+                valor: valor, // Salva exatamente o que foi digitado (positivo ou negativo)
+                mes: getMesAtual()
+            });
+
+            salvar();
+            atualizar();
+
+            document.getElementById("descricao").value = "";
+            document.getElementById("valor").value = "";
+        }
+
+        function remover(index) {
+            movimentacoes.splice(index, 1);
+            salvar();
+            atualizar();
+        }
+
+        atualizar();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu Perfil - FamilyHub</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+.main-content {
+  padding: 30px;
+}
+
+.profile-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin-bottom: 15px;
+}
+
+/* INPUTS */
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+/* STATS */
+.stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f4f6fb;
+  border-radius: 10px;
+}
+
+/* BOTÃO */
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body class="desktop-body">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">🏠</div>
+        <h2>FamilyHub</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">🏠 Início</a>
+        <a href="#" class="nav-item">📅 Agenda</a>
+        <a href="compras.html" class="nav-item">🛍️ Compras</a>
+        <a href="financas.html" class="nav-item">💰 Finanças</a>
+        <a href="#" class="nav-item">💬 Chat</a>
+        <div class="spacer"></div>
+        <a href="perfil.html" class="nav-item active">👤 Meu Perfil</a>
+        <a href="index.html" class="nav-item logout">🚪 Sair</a>
+    </nav>
+</aside>
+
+<!-- CONTEÚDO -->
+<main class="main-content">
+
+<h1>👤 Central do Usuário</h1>
+
+<div class="profile-container">
+
+    <!-- INFO USUÁRIO -->
+    <div class="card">
+        <h2>Informações</h2>
+
+        <div class="input-group">
+            <label>Nome</label>
+            <input type="text" id="nomeInput">
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="emailInput">
+        </div>
+
+        <button onclick="salvar()">Salvar alterações</button>
+    </div>
+
+    <!-- RESUMO -->
+    <div class="card">
+        <h2>Resumo da Conta</h2>
+
+        <div class="stat">
+            <span>🛍️ Itens pendentes</span>
+            <strong id="comprasPendentes">0</strong>
+        </div>
+
+        <div class="stat">
+            <span>👤 Nome atual</span>
+            <strong id="nomeAtual"></strong>
+        </div>
+
+        <div class="stat">
+            <span>📧 Email</span>
+            <strong id="emailAtual"></strong>
+        </div>
+
+        <div class="stat">
+            <span>⏰ Último acesso</span>
+            <strong id="acesso"></strong>
+        </div>
+    </div>
+
+</div>
+
+</main>
+
+<script>
+// carregar dados
+let nome = localStorage.getItem("usuario") || "Usuário";
+let email = localStorage.getItem("email") || "Não definido";
+
+// compras
+let compras = JSON.parse(localStorage.getItem("compras")) || [];
+
+// preencher inputs
+document.getElementById("nomeInput").value = nome;
+document.getElementById("emailInput").value = email;
+
+// preencher resumo
+document.getElementById("nomeAtual").innerText = nome;
+document.getElementById("emailAtual").innerText = email;
+document.getElementById("comprasPendentes").innerText = compras.length;
+
+// último acesso simples
+document.getElementById("acesso").innerText = new Date().toLocaleString();
+
+// salvar
+function salvar() {
+  let novoNome = document.getElementById("nomeInput").value;
+  let novoEmail = document.getElementById("emailInput").value;
+
+  localStorage.setItem("usuario", novoNome);
+  localStorage.setItem("email", novoEmail);
+
+  alert("Perfil atualizado!");
+
+  location.reload();
+}
+</script>
+
+</body>
+</html>

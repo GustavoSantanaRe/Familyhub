@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamilyHub - Criar Família</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; }
+        
+        .login-body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                              url('https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px; border-radius: 20px; width: 100%; max-width: 400px;
+            text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 14px; margin-bottom: 5px; color: #444; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; outline: none; }
+        
+        /* Medidor de Senha */
+        .password-meter { height: 4px; width: 100%; background-color: #ddd; border-radius: 2px; margin-top: 8px; overflow: hidden; }
+        .meter-fill { height: 100%; width: 0%; transition: width 0.3s ease, background-color 0.3s ease; }
+        .strength-text { font-size: 11px; margin-top: 4px; font-weight: 600; display: block; text-align: right; }
+
+        .btn-primary {
+            width: 100%; padding: 14px; background: #000; color: #fff;
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px;
+        }
+
+        .back-link { display: block; margin-top: 20px; color: #4F46E5; text-decoration: none; font-size: 14px; font-weight: 600; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <h2>Criar sua Família</h2>
+        <p>Preencha os dados abaixo.</p>
+        
+        <form id="cadastroForm">
+            <div class="input-group">
+                <label>Nome da Família</label>
+                <input type="text" placeholder="Ex: Família Silva" required>
+            </div>
+            
+            <div class="input-group">
+                <label>Seu E-mail</label>
+                <input type="email" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>Senha Mestra</label>
+                <input type="password" id="passwordInput" placeholder="••••••••" required>
+                <div class="password-meter"><div id="meterFill" class="meter-fill"></div></div>
+                <span id="strengthText" class="strength-text" style="color: #999;">Digite uma senha</span>
+            </div>
+
+            <button type="submit" class="btn-primary">Criar Grupo Familiar</button>
+        </form>
+
+        <a href="index.html" class="back-link">&larr; Voltar para o Login</a>
+    </div>
+
+    <script>
+        // Lógica do Medidor de Senha
+        const passwordInput = document.getElementById('passwordInput');
+        const meterFill = document.getElementById('meterFill');
+        const strengthText = document.getElementById('strengthText');
+
+        passwordInput.addEventListener('input', function() {
+            const senha = passwordInput.value;
+            let forca = 0;
+            if (senha.length > 5) forca++;
+            if (senha.match(/[a-z]/) && senha.match(/[A-Z]/)) forca++;
+            if (senha.match(/[0-9]/)) forca++;
+            if (senha.match(/[^a-zA-Z0-9]/)) forca++;
+
+            if (forca === 0) { meterFill.style.width = '0%'; strengthText.innerText = 'Digite uma senha'; strengthText.style.color = '#999'; }
+            else if (forca === 1) { meterFill.style.width = '33%'; meterFill.style.backgroundColor = '#ff4d4d'; strengthText.innerText = 'Senha Fraca'; strengthText.style.color = '#ff4d4d'; }
+            else if (forca <= 3) { meterFill.style.width = '66%'; meterFill.style.backgroundColor = '#ffd11a'; strengthText.innerText = 'Senha Média'; strengthText.style.color = '#ffd11a'; }
+            else { meterFill.style.width = '100%'; meterFill.style.backgroundColor = '#2ecc71'; strengthText.innerText = 'Senha Forte'; strengthText.style.color = '#2ecc71'; }
+        });
+
+        // REDIRECIONAMENTO APÓS CADASTRO
+        document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Para o envio padrão
+            alert("Família criada com sucesso! Agora faça seu login.");
+            window.location.href = "index.html"; // Redireciona para o login
+        });
+    </script>
+</body>
+</html>

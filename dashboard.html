@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FamilyHub - Dashboard Desktop</title>
+    <title>FamilyHub - Dashboard</title>
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body class="desktop-body">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon">🏠</div>
@@ -16,25 +19,25 @@
         </div>
         
         <nav class="sidebar-nav">
-            <a href="#" class="nav-item active">🏠 Início</a>
+            <a href="dashboard.html" class="nav-item active">🏠 Início</a>
             <a href="#" class="nav-item">📅 Agenda</a>
-
             <a href="compras.html" class="nav-item">🛍️ Compras</a>
-
-            <a href="#" class="nav-item">💰 Finanças</a>
+            <!-- CORRIGIDO AQUI -->
+            <a href="financas.html" class="nav-item">💰 Finanças</a>
             <a href="#" class="nav-item">💬 Chat</a>
             <div class="spacer"></div>
-            <a href="#" class="nav-item">👤 Meu Perfil</a>
+            <a href="perfil.html" class="nav-item">👤 Meu Perfil</a>
             <a href="index.html" class="nav-item logout">🚪 Sair</a>
         </nav>
     </aside>
 
+    <!-- CONTEÚDO -->
     <main class="main-content">
+
+        <!-- HEADER -->
         <header class="main-header">
             <div class="welcome">
                 <h1>Família Silva</h1>
-
-                <!-- NOME DINÂMICO -->
                 <p>Boa tarde, <span id="nomeUsuario"></span>! Aqui está o que está acontecendo hoje.</p>
             </div>
             
@@ -50,33 +53,49 @@
             </div>
         </header>
 
+        <!-- GRID -->
         <div class="dashboard-grid">
             
+            <!-- COLUNA ESQUERDA -->
             <div class="column">
+                
                 <section class="card">
                     <div class="card-header">
                         <h3>Agenda de Hoje</h3>
                         <span>16 de Abril</span>
                     </div>
+
                     <div class="event-item">
                         <span class="dot blue"></span>
-                        <div class="event-info"><strong>Consulta médica</strong><p>Mãe - Hospital São Lucas</p></div>
+                        <div class="event-info">
+                            <strong>Consulta médica</strong>
+                            <p>Mãe - Hospital São Lucas</p>
+                        </div>
                         <span class="time">10:00</span>
                     </div>
+
                     <div class="event-item">
                         <span class="dot green"></span>
-                        <div class="event-info"><strong>Treino de futebol</strong><p>Kai - Quadra Municipal</p></div>
+                        <div class="event-info">
+                            <strong>Treino de futebol</strong>
+                            <p>Kai - Quadra Municipal</p>
+                        </div>
                         <span class="time">16:30</span>
                     </div>
+
                     <div class="event-item">
                         <span class="dot orange"></span>
-                        <div class="event-info"><strong>Jantar em família</strong><p>Todos - Em casa</p></div>
+                        <div class="event-info">
+                            <strong>Jantar em família</strong>
+                            <p>Todos - Em casa</p>
+                        </div>
                         <span class="time">19:00</span>
                     </div>
                 </section>
 
                 <section class="card">
                     <h3>Mural de Avisos</h3>
+
                     <div class="notice">
                         <span class="avatar small mae">MÃE</span>
                         <div class="notice-content">
@@ -84,6 +103,7 @@
                             <p>Lembrem de levar o guarda-chuva hoje!</p>
                         </div>
                     </div>
+
                     <div class="notice">
                         <span class="avatar small pai">PAI</span>
                         <div class="notice-content">
@@ -92,12 +112,15 @@
                         </div>
                     </div>
                 </section>
+
             </div>
 
+            <!-- COLUNA DIREITA -->
             <div class="column">
+                
                 <div class="tools-grid-desktop">
 
-                    <!-- CARD DE COMPRAS -->
+                    <!-- COMPRAS -->
                     <a href="compras.html" style="text-decoration: none; color: inherit;">
                         <div class="tool-card">
                             <div class="icon-box green">🛍️</div>
@@ -106,12 +129,16 @@
                         </div>
                     </a>
 
-                    <div class="tool-card">
-                        <div class="icon-box yellow">💰</div>
-                        <h4>Finanças</h4>
-                        <p>R$ 4.200 gastos este mês</p>
-                    </div>
+                    <!-- FINANÇAS (CORRIGIDO) -->
+                    <a href="financas.html" style="text-decoration: none; color: inherit;">
+                        <div class="tool-card">
+                            <div class="icon-box yellow">💰</div>
+                            <h4>Finanças</h4>
+                            <p>R$ 4.200 gastos este mês</p>
+                        </div>
+                    </a>
 
+                    <!-- CHAT -->
                     <div class="tool-card">
                         <div class="icon-box purple">💬</div>
                         <h4>Chat</h4>
@@ -119,18 +146,18 @@
                     </div>
 
                 </div>
+
             </div>
 
         </div>
+
     </main>
 
-    <!-- SCRIPT FINAL -->
+    <!-- SCRIPT -->
     <script>
-        // Nome do usuário vindo do login
         let nome = localStorage.getItem("usuario") || "Usuário";
         document.getElementById("nomeUsuario").innerText = nome;
 
-        // Contador de compras
         let lista = JSON.parse(localStorage.getItem("compras")) || [];
         document.getElementById("contador").innerText = lista.length + " itens pendentes";
     </script>
